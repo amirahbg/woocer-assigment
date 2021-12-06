@@ -4,6 +4,7 @@ import android.view.View
 import android.widget.ImageView
 import android.widget.ProgressBar
 import androidx.databinding.BindingAdapter
+import com.app.woocerassignment.R
 import com.bumptech.glide.Glide
 
 @BindingAdapter("binder:progressVisibility")
@@ -21,7 +22,9 @@ fun loadImageUrlIntoImageView(
 ) {
     Glide
         .with(imageView.context)
-        .load("https://i.picsum.photos/id/810/200/300.jpg?hmac=HgwlXd-OaLOAqhGyCiZDUb_75EgUI4u0GtS7nfgxd8s")
+        .load(imageUrl)
         .centerCrop()
+        .placeholder(R.drawable.placeholder)
+        .error(R.drawable.placeholder)
         .into(imageView)
 }
