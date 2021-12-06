@@ -17,15 +17,9 @@ class ProductRepoImpl @Inject constructor(
 ) : ProductRepo {
 
     override suspend fun getAllProducts(): Flow<Result<List<ProductEntity>>> =
-        flow<Result<List<ProductEntity>>> {
+        flow {
             val response = remoteDS.getAllProducts()
-            response
-                .onSuccess {
-                    emit(Result.success(it.map { remoteModel -> remoteModel.toSummariseEntity() }))
-                }
-                .onFailure {
-                    emit(Result.failure(it))
-                }
+            emit(Result.success(response.getOrThrow().map { it.toSummariseEntity() }))
         }
             .flowOn(dispatcher)
             .catch { emit(Result.failure(it)) }

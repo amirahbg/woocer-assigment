@@ -10,4 +10,6 @@ interface SignInRepo {
         username: String,
         password: String
     ): Flow<Result<Unit>>
+
+    fun isLoggedIn(): Boolean
 }

@@ -6,5 +6,6 @@ data class ProductEntity(
     val price: String,
     val isPurchasable: Boolean,
     val image: String,
-    val description: String
+    val description: String,
+    val rating: Float
 )

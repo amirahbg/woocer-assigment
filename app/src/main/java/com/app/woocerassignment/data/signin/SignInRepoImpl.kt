@@ -31,4 +31,8 @@ class SignInRepoImpl @Inject constructor(
         emit(response)
     }.flowOn(ioDispatcher)
         .catch { emit(Result.failure(it)) }
+
+    override fun isLoggedIn(): Boolean {
+        return localDS.isLoggedIn()
+    }
 }

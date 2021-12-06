@@ -26,6 +26,14 @@ class SignInViewModel @Inject constructor(
     val signInCompleted = _signInCompleted.receiveAsFlow()
     //endregion
 
+    init {
+        if (signInRepo.isLoggedIn()) {
+            viewModelScope.launch {
+                _signInCompleted.send(Unit)
+            }
+        }
+    }
+
     //region Public functions
     fun signIn(
         name: String,

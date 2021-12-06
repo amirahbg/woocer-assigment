@@ -27,6 +27,10 @@ class HomeViewModel @Inject constructor(
     val message = _message.receiveAsFlow()
     //endregion
 
+    init {
+        getAllProducts()
+    }
+
     //region Public functions
     fun getAllProducts() {
         if (this::job.isInitialized) {

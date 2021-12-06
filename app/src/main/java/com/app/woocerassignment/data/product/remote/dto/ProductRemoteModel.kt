@@ -148,5 +148,6 @@ fun ProductRemoteModel.toSummariseEntity() =
         price = price,
         isPurchasable = purchasable,
         image = if (images.isNullOrEmpty()) "" else images[0].src,
-        description = description // is in html format
+        description = description, // is in html format
+        rating = averageRating.toFloat()
     )
