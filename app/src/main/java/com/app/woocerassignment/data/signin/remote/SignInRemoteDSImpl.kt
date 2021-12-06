@@ -1,11 +1,10 @@
 package com.app.woocerassignment.data.signin.remote
 
-import com.app.woocerassignment.data.WoocerService
-import kotlinx.coroutines.delay
+import com.app.woocerassignment.data.NoAuthRequiredWoocerService
 import javax.inject.Inject
 
 class SignInRemoteDSImpl @Inject constructor(
-    private val woocerService: WoocerService
+    private val noAuthRequiredWoocerService: NoAuthRequiredWoocerService
 ) : SignInRemoteDS {
 
     override suspend fun signIn(
@@ -22,7 +21,7 @@ class SignInRemoteDSImpl @Inject constructor(
                         "&consumer_secret=$password" +
                         "&name=$name" +
                         "&email=$email"
-            val result = woocerService.signIn(url)
+            val result = noAuthRequiredWoocerService.signIn(url)
             if (result.isSuccessful) {
                 Result.success(Unit)
             } else {

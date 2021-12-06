@@ -3,7 +3,10 @@ package com.app.woocerassignment.data.di
 import android.content.Context
 import android.content.Context.MODE_PRIVATE
 import android.content.SharedPreferences
-import com.app.woocerassignment.data.WoocerService
+import com.app.woocerassignment.data.AuthRequiredWoocerService
+import com.app.woocerassignment.data.NoAuthRequiredWoocerService
+import com.app.woocerassignment.data.base.AuthorizationInterceptor
+import com.app.woocerassignment.data.base.DomainInterceptor
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -23,7 +26,8 @@ object DataProviderModule {
 
     @Singleton
     @Provides
-    fun provideOkHttpClient(): OkHttpClient {
+    @NoAuthRequired
+    fun provideNoAuthOkHttpClient(): OkHttpClient {
         val logging = HttpLoggingInterceptor()
         logging.level = HttpLoggingInterceptor.Level.BASIC
 
@@ -34,14 +38,43 @@ object DataProviderModule {
 
     @Singleton
     @Provides
-    fun provideWoocerService(
-        okHttpClient: OkHttpClient
-    ): WoocerService {
+    @AuthRequired
+    fun provideAuthOkHttpClient(
+        domainInterceptor: DomainInterceptor,
+        authorizationInterceptor: AuthorizationInterceptor
+    ): OkHttpClient {
+        val logging = HttpLoggingInterceptor()
+        logging.level = HttpLoggingInterceptor.Level.BASIC
+
+        return OkHttpClient.Builder()
+            .addInterceptor(logging)
+            .addInterceptor(domainInterceptor)
+            .addInterceptor(authorizationInterceptor)
+            .build()
+    }
+
+    @Singleton
+    @Provides
+    fun provideNoAuthWoocerService(
+        @NoAuthRequired okHttpClient: OkHttpClient
+    ): NoAuthRequiredWoocerService {
         return Retrofit.Builder()
-            .baseUrl("https://wpt.woocer.com/")
+            .baseUrl("https://localhost/")
             .addConverterFactory(GsonConverterFactory.create())
             .client(okHttpClient)
-            .build().create(WoocerService::class.java)
+            .build().create(NoAuthRequiredWoocerService::class.java)
+    }
+
+    @Singleton
+    @Provides
+    fun provideAuthWoocerService(
+        @AuthRequired okHttpClient: OkHttpClient
+    ): AuthRequiredWoocerService {
+        return Retrofit.Builder()
+            .baseUrl("https://localhost/")
+            .addConverterFactory(GsonConverterFactory.create())
+            .client(okHttpClient)
+            .build().create(AuthRequiredWoocerService::class.java)
     }
 
     @Singleton

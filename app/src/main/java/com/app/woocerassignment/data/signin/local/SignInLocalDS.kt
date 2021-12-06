@@ -8,4 +8,10 @@ interface SignInLocalDS {
         password: String,
         website: String
     )
+
+    fun getWebsite(): String?
+
+    fun getUsername(): String?
+
+    fun getPassword(): String?
 }

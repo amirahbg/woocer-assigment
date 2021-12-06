@@ -21,6 +21,18 @@ class SignInLocalDSImpl @Inject constructor(
             .apply()
     }
 
+    override fun getWebsite(): String? {
+        return sharedPreferences.getString(WEBSITE_KEY, null)
+    }
+
+    override fun getUsername(): String? {
+        return sharedPreferences.getString(USERNAME_KEY, null)
+    }
+
+    override fun getPassword(): String? {
+        return sharedPreferences.getString(PASSWORD_KEY, null)
+    }
+
     companion object {
         const val USERNAME_KEY = "username-key"
         const val PASSWORD_KEY = "password-key"
