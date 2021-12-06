@@ -146,6 +146,7 @@ fun ProductRemoteModel.toSummariseEntity() =
         id = id,
         name = name,
         price = price,
+        priceHtml = priceHtml,
         isPurchasable = purchasable,
         image = if (images.isNullOrEmpty()) "" else images[0].src,
         description = description, // is in html format

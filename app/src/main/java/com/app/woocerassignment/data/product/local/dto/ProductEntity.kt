@@ -4,6 +4,7 @@ data class ProductEntity(
     val id: Int,
     val name: String,
     val price: String,
+    val priceHtml: String,
     val isPurchasable: Boolean,
     val image: String,
     val description: String,

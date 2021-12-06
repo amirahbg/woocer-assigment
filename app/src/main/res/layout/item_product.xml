@@ -15,7 +15,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="8dp">
 
-        <ImageView
+        <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/productImageView"
             android:layout_width="match_parent"
             android:layout_height="200dp"
@@ -40,11 +40,11 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/titleTextView"
             android:layout_alignParentStart="true"
-            android:text="@{product.price}"
             android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
             android:textColor="@color/design_default_color_primary_dark"
             android:textSize="20sp"
             android:textStyle="bold"
+            binder:priceText="@{product.priceHtml}"
             tools:text="$45" />
 
         <androidx.appcompat.widget.AppCompatRatingBar

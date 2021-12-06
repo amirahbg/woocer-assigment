@@ -1,8 +1,12 @@
 package com.app.woocerassignment.ui
 
+import android.os.Build
+import android.text.Html
 import android.view.View
 import android.widget.ImageView
 import android.widget.ProgressBar
+import android.widget.TextView
+import androidx.appcompat.widget.AppCompatImageView
 import androidx.databinding.BindingAdapter
 import com.app.woocerassignment.R
 import com.bumptech.glide.Glide
@@ -17,7 +21,7 @@ fun setProgressBarVisibility(
 
 @BindingAdapter("binder:imageUrl")
 fun loadImageUrlIntoImageView(
-    imageView: ImageView,
+    imageView: AppCompatImageView,
     imageUrl: String
 ) {
     Glide
@@ -27,4 +31,15 @@ fun loadImageUrlIntoImageView(
         .placeholder(R.drawable.placeholder)
         .error(R.drawable.placeholder)
         .into(imageView)
+}
+
+@BindingAdapter("binder:priceText")
+fun setPriceToTextView(textView: TextView, priceHtml: String) {
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+        textView.text = Html.fromHtml(
+            priceHtml,
+            Html.FROM_HTML_MODE_COMPACT
+        )
+
+    } else textView.text = Html.fromHtml(priceHtml)
 }
