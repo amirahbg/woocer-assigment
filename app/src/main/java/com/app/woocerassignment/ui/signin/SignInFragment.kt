@@ -14,6 +14,7 @@ import com.app.woocerassignment.R
 import com.app.woocerassignment.databinding.FragmentSignInBinding
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.collect
 
 @AndroidEntryPoint
@@ -51,11 +52,17 @@ class SignInFragment : Fragment() {
 
     private fun registerObservers() {
         lifecycleScope.launchWhenCreated {
-            viewModel.message.collect {
-                Toast.makeText(requireContext(), it, LENGTH_LONG).show()
+            async {
+                viewModel.message.collect {
+                    Toast.makeText(requireContext(), it, LENGTH_LONG).show()
+                }
             }
-            viewModel.signInCompleted.collect {
 
+            async {
+                viewModel.signInCompleted.collect {
+                    val action = SignInFragmentDirections.actionSignInFragmentToHomeFragment()
+                    findNavController().navigate(action)
+                }
             }
         }
     }

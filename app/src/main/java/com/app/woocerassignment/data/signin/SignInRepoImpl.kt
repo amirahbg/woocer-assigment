@@ -22,17 +22,13 @@ class SignInRepoImpl @Inject constructor(
         username: String,
         password: String
     ): Flow<Result<Unit>> = flow {
-        if (localDS.isLoggedIn())
-            emit(Result.success(Unit))
-        else {
-            val response = remoteDS.signIn(
-                name, email, website, username, password
-            )
-            if (response.isSuccess) {
-                localDS.saveSignIn(username, password, website)
-            }
-            emit(response)
+        val response = remoteDS.signIn(
+            name, email, website, username, password
+        )
+        if (response.isSuccess) {
+            localDS.saveSignIn(username, password, website)
         }
+        emit(response)
     }.flowOn(ioDispatcher)
         .catch { emit(Result.failure(it)) }
 }
