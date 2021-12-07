@@ -54,15 +54,11 @@ class SignInViewModel @Inject constructor(
         username: String,
         password: String
     ) {
-        val tempWeb = "https://wpt.woocer.com/"
-        val tempUsername = "ck_85f212310cfff32728cc4c933331aa6bcf3002ef"
-        val tempPassword = "cs_ee784168289012a919a008985d2252fadecea2bb"
-
         if (!isInputValid(website, username, password))
             return
 
         viewModelScope.launch {
-            signInRepo.signIn(name, email, tempWeb, tempUsername, tempPassword)
+            signInRepo.signIn(name, email, website, username, password)
                 .onStart { _isLoading.value = true }
                 .collect {
                     Log.i("TAG", "signIn: $it")
