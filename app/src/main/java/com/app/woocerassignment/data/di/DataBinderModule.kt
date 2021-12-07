@@ -2,6 +2,8 @@ package com.app.woocerassignment.data.di
 
 import com.app.woocerassignment.data.product.ProductRepo
 import com.app.woocerassignment.data.product.ProductRepoImpl
+import com.app.woocerassignment.data.product.local.ProductLocalDS
+import com.app.woocerassignment.data.product.local.ProductLocalDSImpl
 import com.app.woocerassignment.data.product.remote.ProductRemoteDS
 import com.app.woocerassignment.data.product.remote.ProductRemoteDSImpl
 import com.app.woocerassignment.data.signin.SignInRepo
@@ -33,4 +35,7 @@ abstract class DataBinderModule {
 
     @Binds
     abstract fun bindProductRepo(impl: ProductRepoImpl): ProductRepo
+
+    @Binds
+    abstract fun bindProductLocalDS(impl: ProductLocalDSImpl): ProductLocalDS
 }

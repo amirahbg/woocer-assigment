@@ -3,10 +3,13 @@ package com.app.woocerassignment.data.di
 import android.content.Context
 import android.content.Context.MODE_PRIVATE
 import android.content.SharedPreferences
+import androidx.room.Room
 import com.app.woocerassignment.data.AuthRequiredWoocerService
 import com.app.woocerassignment.data.NoAuthRequiredWoocerService
+import com.app.woocerassignment.data.base.AppDatabase
 import com.app.woocerassignment.data.base.AuthorizationInterceptor
 import com.app.woocerassignment.data.base.DomainInterceptor
+import com.app.woocerassignment.data.product.local.ProductDao
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -97,5 +100,21 @@ object DataProviderModule {
     @MainDispatcher
     fun provideMainDispatcher(): CoroutineDispatcher {
         return Dispatchers.Main
+    }
+
+    @Singleton
+    @Provides
+    fun provideAppDatabase(@ApplicationContext context: Context): AppDatabase {
+        return Room.databaseBuilder(
+            context,
+            AppDatabase::class.java,
+            "woocer.db"
+        ).build()
+    }
+
+    @Singleton
+    @Provides
+    fun provideProductDao(database: AppDatabase): ProductDao {
+        return database.productDao()
     }
 }
