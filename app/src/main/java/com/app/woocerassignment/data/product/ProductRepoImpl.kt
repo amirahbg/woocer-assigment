@@ -20,7 +20,11 @@ class ProductRepoImpl @Inject constructor(
 
     override suspend fun getAllProducts(): Flow<Result<List<ProductEntity>>> =
         flow {
-            val localProducts = localDS.getAllProducts()
+            val localProducts = try {
+                localDS.getAllProducts()
+            } catch (e: Exception) {
+                null
+            }
             if (localProducts.isNullOrEmpty()) {
                 val response = remoteDS.getAllProducts()
                 val remoteProducts = response.getOrThrow().map { it.toSummariseEntity() }
