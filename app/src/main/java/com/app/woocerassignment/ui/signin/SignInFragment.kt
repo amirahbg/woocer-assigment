@@ -64,6 +64,23 @@ class SignInFragment : Fragment() {
                     findNavController().navigate(action)
                 }
             }
+            async {
+                viewModel.websiteInvalidInputError.collect {
+                    binding.websiteEditText.error = it
+                }
+            }
+
+            async {
+                viewModel.passwordInvalidInputError.collect {
+                    binding.passwordEditText.error = it
+                }
+            }
+
+            async {
+                viewModel.usernameInvalidInputError.collect {
+                    binding.usernameEditText.error = it
+                }
+            }
         }
     }
 }

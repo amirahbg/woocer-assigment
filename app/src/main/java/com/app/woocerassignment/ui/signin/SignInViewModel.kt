@@ -1,6 +1,7 @@
 package com.app.woocerassignment.ui.signin
 
 import android.util.Log
+import android.util.Patterns
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.app.woocerassignment.data.signin.SignInRepo
@@ -24,6 +25,16 @@ class SignInViewModel @Inject constructor(
 
     private val _signInCompleted: Channel<Unit> = Channel()
     val signInCompleted = _signInCompleted.receiveAsFlow()
+
+    private val _websiteInvalidInputError: Channel<String> = Channel()
+    val websiteInvalidInputError = _websiteInvalidInputError.receiveAsFlow()
+
+    private val _usernameInvalidInputError: Channel<String> = Channel()
+    val usernameInvalidInputError = _websiteInvalidInputError.receiveAsFlow()
+
+    private val _passwordInvalidInputError: Channel<String> = Channel()
+    val passwordInvalidInputError = _websiteInvalidInputError.receiveAsFlow()
+
     //endregion
 
     init {
@@ -45,6 +56,10 @@ class SignInViewModel @Inject constructor(
         val tempWeb = "https://wpt.woocer.com/"
         val tempUsername = "ck_85f212310cfff32728cc4c933331aa6bcf3002ef"
         val tempPassword = "cs_ee784168289012a919a008985d2252fadecea2bb"
+
+        if (!isInputValid(website, username, password))
+            return
+
         viewModelScope.launch {
             signInRepo.signIn(name, email, tempWeb, tempUsername, tempPassword)
                 .onStart { _isLoading.value = true }
@@ -58,6 +73,36 @@ class SignInViewModel @Inject constructor(
 
                 }
         }
+    }
+
+    private fun isInputValid(website: String, username: String, password: String): Boolean {
+        var result = true
+        if (website.isBlank() ||
+            !Patterns.WEB_URL.matcher(website).matches()
+        ) {
+            viewModelScope.launch {
+                _websiteInvalidInputError.send("Invalid Input!")
+            }
+            result = false
+        }
+        if (username.isBlank() ||
+            !Patterns.WEB_URL.matcher(website).matches()
+        ) {
+            viewModelScope.launch {
+                _usernameInvalidInputError.send("Invalid Input!")
+            }
+            result = false
+        }
+        if (password.isBlank() ||
+            !Patterns.WEB_URL.matcher(website).matches()
+        ) {
+            viewModelScope.launch {
+                _passwordInvalidInputError.send("Invalid Input!")
+            }
+            result = false
+        }
+
+        return result
     }
     //endregion
 
