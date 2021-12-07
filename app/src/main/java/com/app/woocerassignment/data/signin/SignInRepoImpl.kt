@@ -22,6 +22,10 @@ class SignInRepoImpl @Inject constructor(
         username: String,
         password: String
     ): Flow<Result<Unit>> = flow {
+        if (!isValidInput(website, username, password)) {
+            emit(Result.failure(Throwable("Invalid Input")))
+            return@flow
+        }
         val response = remoteDS.signIn(
             name, email, website, username, password
         )
@@ -31,6 +35,10 @@ class SignInRepoImpl @Inject constructor(
         emit(response)
     }.flowOn(ioDispatcher)
         .catch { emit(Result.failure(it)) }
+
+    private fun isValidInput(website: String, username: String, password: String): Boolean {
+        return website.isNotBlank() && username.isNotBlank() && password.isNotBlank()
+    }
 
     override fun isLoggedIn(): Boolean {
         return localDS.isLoggedIn()
