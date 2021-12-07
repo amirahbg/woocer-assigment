@@ -2,6 +2,7 @@ package com.app.woocerassignment.ui.signin
 
 import android.util.Log
 import android.util.Patterns
+import androidx.core.util.PatternsCompat
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.app.woocerassignment.data.signin.SignInRepo
@@ -78,24 +79,20 @@ class SignInViewModel @Inject constructor(
     private fun isInputValid(website: String, username: String, password: String): Boolean {
         var result = true
         if (website.isBlank() ||
-            !Patterns.WEB_URL.matcher(website).matches()
+            !PatternsCompat.WEB_URL.matcher(website).matches()
         ) {
             viewModelScope.launch {
                 _websiteInvalidInputError.send("Invalid Input!")
             }
             result = false
         }
-        if (username.isBlank() ||
-            !Patterns.WEB_URL.matcher(website).matches()
-        ) {
+        if (username.isBlank()) {
             viewModelScope.launch {
                 _usernameInvalidInputError.send("Invalid Input!")
             }
             result = false
         }
-        if (password.isBlank() ||
-            !Patterns.WEB_URL.matcher(website).matches()
-        ) {
+        if (password.isBlank()) {
             viewModelScope.launch {
                 _passwordInvalidInputError.send("Invalid Input!")
             }
