@@ -2,12 +2,14 @@ package com.app.woocerassignment.ui
 
 import android.os.Build
 import android.text.Html
+import android.util.Log
 import android.view.View
 import android.widget.ImageView
 import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.databinding.BindingAdapter
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.app.woocerassignment.R
 import com.bumptech.glide.Glide
 
@@ -42,4 +44,10 @@ fun setPriceToTextView(textView: TextView, priceHtml: String) {
         )
 
     } else textView.text = Html.fromHtml(priceHtml)
+}
+
+@BindingAdapter("binder:isRefreshing")
+fun setIsRefreshing(swipeRefreshLayout: SwipeRefreshLayout, isRefreshing: Boolean) {
+    Log.i("TAG", "setIsRefreshing: $isRefreshing")
+    swipeRefreshLayout.isRefreshing = isRefreshing
 }

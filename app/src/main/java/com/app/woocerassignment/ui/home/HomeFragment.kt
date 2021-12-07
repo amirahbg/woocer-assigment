@@ -30,6 +30,7 @@ class HomeFragment : Fragment() {
     ): View {
         binding = FragmentHomeBinding.inflate(inflater, container, false)
         binding.lifecycleOwner = viewLifecycleOwner
+        binding.viewModel = viewModel
 
         return binding.root
     }
@@ -41,6 +42,10 @@ class HomeFragment : Fragment() {
         binding.productsRecyclerView.layoutManager = GridLayoutManager(
             requireContext(), 2
         )
+
+        binding.swipeRefresh.setOnRefreshListener {
+            viewModel.getAllProducts()
+        }
 
         lifecycleScope.launchWhenCreated {
             async {
